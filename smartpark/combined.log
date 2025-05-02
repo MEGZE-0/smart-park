@@ -1,0 +1,23 @@
+{"level":"info","message":"Server running on port 3000","timestamp":"2025-05-02T19:49:30.891Z"}
+{"level":"info","message":"MongoDB connected successfully!","timestamp":"2025-05-02T19:49:32.807Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:49:40 +0000] \"GET /api-docs HTTP/1.1\" 301 158 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:49:40.011Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:49:40 +0000] \"GET /api-docs/ HTTP/1.1\" 200 3106 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:49:40.067Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:49:40 +0000] \"GET /api-docs/swagger-ui-init.js HTTP/1.1\" 200 8238 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:49:40.575Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:49:40 +0000] \"GET /api-docs/swagger-ui.css HTTP/1.1\" 200 154986 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:49:40.594Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:49:40 +0000] \"GET /api-docs/swagger-ui-standalone-preset.js HTTP/1.1\" 200 229223 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:49:40.600Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:49:40 +0000] \"GET /api-docs/swagger-ui-bundle.js HTTP/1.1\" 200 1468326 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:49:40.626Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:49:41 +0000] \"GET /api-docs/favicon-32x32.png HTTP/1.1\" 200 628 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:49:41.161Z"}
+{"level":"info","message":"User registered: test@gmail.com","timestamp":"2025-05-02T19:50:16.665Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:50:16 +0000] \"POST /auth/register HTTP/1.1\" 201 183 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:50:16.666Z"}
+{"level":"error","message":"Validation error: \"amenities[1]\" must be one of [ev_charging, disabled_access, security, covered]","timestamp":"2025-05-02T19:58:05.823Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:58:05 +0000] \"POST /parking HTTP/1.1\" 400 95 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:58:05.825Z"}
+{"level":"error","message":"Validation error: \"amenities[1]\" must be one of [ev_charging, disabled_access, security, covered]","timestamp":"2025-05-02T19:58:16.322Z"}
+{"level":"info","message":"::1 - - [02/May/2025:19:58:16 +0000] \"POST /parking HTTP/1.1\" 400 95 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T19:58:16.324Z"}
+{"level":"info","message":"Parking spot created: 681524520f30e7fb7eb5acb4","timestamp":"2025-05-02T20:00:18.967Z"}
+{"level":"info","message":"::1 - - [02/May/2025:20:00:18 +0000] \"POST /parking HTTP/1.1\" 201 233 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Avast/134.0.0.0\"","timestamp":"2025-05-02T20:00:18.969Z"}
+{"level":"info","message":"Server running on port 3000","timestamp":"2025-05-02T20:04:02.100Z"}
+{"level":"info","message":"MongoDB connected successfully!","timestamp":"2025-05-02T20:04:03.992Z"}
+{"level":"info","message":"Server running on port 3000","timestamp":"2025-05-02T20:04:10.031Z"}
+{"level":"info","message":"MongoDB connected successfully!","timestamp":"2025-05-02T20:04:11.521Z"}
+{"level":"info","message":"Server running on port 3000","timestamp":"2025-05-02T20:05:05.874Z"}
+{"level":"info","message":"MongoDB connected successfully!","timestamp":"2025-05-02T20:05:07.512Z"}

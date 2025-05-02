@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: SmartPark API
+  version: 2.1.0
+  description: API for managing parking spots and reservations
+servers:
+  - url: http://localhost:3000
+    description: Development server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User registered
+  /parking:
+    post:
+      summary: Create a new parking spot
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                latitude:
+                  type: number
+                longitude:
+                  type: number
+                type:
+                  type: string
+                  enum: [indoor, street, valet]
+                available:
+                  type: boolean
+                pricePerHour:
+                  type: number
+                amenities:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: Parking spot created
+    get:
+      summary: List all parking spots
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: amenities
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of parking spots
+  /parking/nearby:
+    get:
+      summary: Get nearby parking spots
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: lng
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: available
+          in: query
+          schema:
+            type: boolean
+        - name: radius
+          in: query
+          schema:
+            type: number
+        - name: amenities
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of nearby parking spots
+  /reservations:
+    post:
+      summary: Create a reservation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parkingSpotId:
+                  type: string
+                startTime:
+                  type: string
+                  format: date-time
+                endTime:
+                  type: string
+                  format: date-time
+      responses:
+        '201':
+          description: Reservation created
+  /health:
+    get:
+      summary: Check API health
+      responses:
+        '200':
+          description: Health status

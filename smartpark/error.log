@@ -1,0 +1,2 @@
+{"level":"error","message":"Validation error: \"amenities[1]\" must be one of [ev_charging, disabled_access, security, covered]","timestamp":"2025-05-02T19:58:05.823Z"}
+{"level":"error","message":"Validation error: \"amenities[1]\" must be one of [ev_charging, disabled_access, security, covered]","timestamp":"2025-05-02T19:58:16.322Z"}
