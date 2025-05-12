@@ -1,0 +1,69 @@
+2025-05-11 00:28:06,140 - INFO - Starting data cleaning process
+2025-05-11 00:28:21,926 - INFO - Loading dataset from: C:/Users/abdul/Downloads/Project/Project/without cleaning/student_habits_performance.csv
+2025-05-11 00:28:22,092 - INFO - Dataset loaded with 1000 rows and 16 columns
+2025-05-11 00:28:22,232 - INFO - Missing values: 
+student_id                        0
+age                               0
+gender                            0
+study_hours_per_day               0
+social_media_hours                0
+netflix_hours                     0
+part_time_job                     0
+attendance_percentage             0
+sleep_hours                       0
+diet_quality                      0
+exercise_frequency                0
+parental_education_level         91
+internet_quality                  0
+mental_health_rating              0
+extracurricular_participation     0
+exam_score                        0
+dtype: int64
+2025-05-11 00:28:22,336 - INFO - Dropped 0 columns with >30% missing values
+2025-05-11 00:28:22,439 - INFO - Filled missing values in student_id with mode: S1000
+2025-05-11 00:28:22,443 - INFO - Filled missing values in age with median: 20.0
+2025-05-11 00:28:22,444 - INFO - Filled missing values in gender with mode: Female
+2025-05-11 00:28:22,445 - INFO - Filled missing values in study_hours_per_day with median: 3.5
+2025-05-11 00:28:22,445 - INFO - Filled missing values in social_media_hours with median: 2.5
+2025-05-11 00:28:22,446 - INFO - Filled missing values in netflix_hours with median: 1.8
+2025-05-11 00:28:22,446 - INFO - Filled missing values in part_time_job with mode: No
+2025-05-11 00:28:22,447 - INFO - Filled missing values in attendance_percentage with median: 84.4
+2025-05-11 00:28:22,448 - INFO - Filled missing values in sleep_hours with median: 6.5
+2025-05-11 00:28:22,449 - INFO - Filled missing values in diet_quality with mode: Fair
+2025-05-11 00:28:22,450 - INFO - Filled missing values in exercise_frequency with median: 3.0
+2025-05-11 00:28:22,451 - INFO - Filled missing values in parental_education_level with mode: High School
+2025-05-11 00:28:22,452 - INFO - Filled missing values in internet_quality with mode: Good
+2025-05-11 00:28:22,452 - INFO - Filled missing values in mental_health_rating with median: 5.0
+2025-05-11 00:28:22,453 - INFO - Filled missing values in extracurricular_participation with mode: No
+2025-05-11 00:28:22,454 - INFO - Filled missing values in exam_score with median: 70.5
+2025-05-11 00:28:22,564 - INFO - Removed 0 duplicate rows
+2025-05-11 00:28:22,567 - INFO - Cleaned whitespace in column: student_id
+2025-05-11 00:28:22,568 - INFO - Cleaned whitespace in column: gender
+2025-05-11 00:28:22,569 - INFO - Cleaned whitespace in column: part_time_job
+2025-05-11 00:28:22,569 - INFO - Cleaned whitespace in column: diet_quality
+2025-05-11 00:28:22,570 - INFO - Cleaned whitespace in column: parental_education_level
+2025-05-11 00:28:22,571 - INFO - Cleaned whitespace in column: internet_quality
+2025-05-11 00:28:22,571 - INFO - Cleaned whitespace in column: extracurricular_participation
+2025-05-11 00:28:22,573 - INFO - Converted student_id to numeric
+2025-05-11 00:28:22,573 - INFO - Converted age to numeric
+2025-05-11 00:28:22,574 - INFO - Converted gender to numeric
+2025-05-11 00:28:22,575 - INFO - Converted study_hours_per_day to numeric
+2025-05-11 00:28:22,575 - INFO - Converted social_media_hours to numeric
+2025-05-11 00:28:22,575 - INFO - Converted netflix_hours to numeric
+2025-05-11 00:28:22,577 - INFO - Converted part_time_job to numeric
+2025-05-11 00:28:22,577 - INFO - Converted attendance_percentage to numeric
+2025-05-11 00:28:22,577 - INFO - Converted sleep_hours to numeric
+2025-05-11 00:28:22,579 - INFO - Converted diet_quality to numeric
+2025-05-11 00:28:22,579 - INFO - Converted exercise_frequency to numeric
+2025-05-11 00:28:22,581 - INFO - Converted parental_education_level to numeric
+2025-05-11 00:28:22,584 - INFO - Converted internet_quality to numeric
+2025-05-11 00:28:22,584 - INFO - Converted mental_health_rating to numeric
+2025-05-11 00:28:22,586 - INFO - Converted extracurricular_participation to numeric
+2025-05-11 00:28:22,586 - INFO - Converted exam_score to numeric
+2025-05-11 00:28:22,709 - WARNING - Data quality issues found:
+2025-05-11 00:28:22,709 - WARNING - Column study_hours_per_day has 7 potential outliers
+2025-05-11 00:28:22,709 - WARNING - Column social_media_hours has 5 potential outliers
+2025-05-11 00:28:22,710 - WARNING - Column netflix_hours has 4 potential outliers
+2025-05-11 00:28:22,710 - WARNING - Column attendance_percentage has 3 potential outliers
+2025-05-11 00:28:22,710 - WARNING - Column sleep_hours has 2 potential outliers
+2025-05-11 00:28:22,711 - WARNING - Column exam_score has 2 potential outliers

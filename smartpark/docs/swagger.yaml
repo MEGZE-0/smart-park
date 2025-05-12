@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: SmartPark API
   version: 2.1.0
-  description: API for managing parking spots and reservations
+  description: API for managing parking spots, reservations, and user authentication
 servers:
   - url: http://localhost:3000
     description: Development server
@@ -12,6 +12,65 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+      required:
+        - email
+        - password
+    ParkingSpot:
+      type: object
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+        type:
+          type: string
+          enum: [indoor, street, valet]
+        available:
+          type: boolean
+        pricePerHour:
+          type: number
+          minimum: 0
+        amenities:
+          type: array
+          items:
+            type: string
+            enum: [ev_charging, disabled_access, security, covered]
+      required:
+        - latitude
+        - longitude
+        - type
+    Reservation:
+      type: object
+      properties:
+        parkingSpotId:
+          type: string
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+      required:
+        - parkingSpotId
+        - startTime
+        - endTime
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
 paths:
   /auth/register:
     post:
@@ -21,15 +80,54 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
+              $ref: '#/components/schemas/User'
       responses:
         '201':
           description: User registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auth/login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /parking:
     post:
       summary: Create a new parking spot
@@ -40,26 +138,20 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                latitude:
-                  type: number
-                longitude:
-                  type: number
-                type:
-                  type: string
-                  enum: [indoor, street, valet]
-                available:
-                  type: boolean
-                pricePerHour:
-                  type: number
-                amenities:
-                  type: array
-                  items:
-                    type: string
+              $ref: '#/components/schemas/ParkingSpot'
       responses:
         '201':
           description: Parking spot created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingSpot'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     get:
       summary: List all parking spots
       parameters:
@@ -67,29 +159,166 @@ paths:
           in: query
           schema:
             type: integer
+            minimum: 1
         - name: limit
           in: query
           schema:
             type: integer
+            minimum: 1
         - name: type
           in: query
           schema:
             type: string
+            enum: [indoor, street, valet]
         - name: amenities
           in: query
           schema:
             type: string
+            description: Comma-separated list of amenities
         - name: minPrice
           in: query
           schema:
             type: number
+            minimum: 0
         - name: maxPrice
           in: query
           schema:
             type: number
+            minimum: 0
       responses:
         '200':
           description: List of parking spots
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  limit:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ParkingSpot'
+  /parking/batch:
+    post:
+      summary: Batch upload parking spots via CSV
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                csvData:
+                  type: string
+                  description: CSV string with columns latitude, longitude, type, available, pricePerHour, amenities
+              required:
+                - csvData
+      responses:
+        '201':
+          description: Parking spots uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Invalid CSV data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parking/{id}:
+    get:
+      summary: Get a specific parking spot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parking spot details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingSpot'
+        '404':
+          description: Parking spot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a parking spot
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingSpot'
+      responses:
+        '200':
+          description: Parking spot updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingSpot'
+        '404':
+          description: Parking spot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a parking spot
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Parking spot deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Parking spot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /parking/nearby:
     get:
       summary: Get nearby parking spots
@@ -108,6 +337,7 @@ paths:
           in: query
           schema:
             type: string
+            enum: [indoor, street, valet]
         - name: available
           in: query
           schema:
@@ -116,21 +346,130 @@ paths:
           in: query
           schema:
             type: number
+            minimum: 100
         - name: amenities
           in: query
           schema:
             type: string
+            description: Comma-separated list of amenities
         - name: minPrice
           in: query
           schema:
             type: number
+            minimum: 0
         - name: maxPrice
           in: query
           schema:
             type: number
+            minimum: 0
       responses:
         '200':
           description: List of nearby parking spots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ParkingSpot'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: No parking spots found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parking/distance/{id}:
+    get:
+      summary: Calculate distance to a specific parking spot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: lng
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Distance to parking spot
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parkingSpot:
+                    $ref: '#/components/schemas/ParkingSpot'
+                  distance:
+                    type: number
+                    description: Distance in kilometers
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Parking spot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parking/history/{id}:
+    get:
+      summary: Get parking spot reservation history
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                    parkingSpotId:
+                      type: string
+                    startTime:
+                      type: string
+                      format: date-time
+                    endTime:
+                      type: string
+                      format: date-time
+                    status:
+                      type: string
+                      enum: [active, cancelled]
+        '404':
+          description: Parking spot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /reservations:
     post:
       summary: Create a reservation
@@ -141,22 +480,93 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                parkingSpotId:
-                  type: string
-                startTime:
-                  type: string
-                  format: date-time
-                endTime:
-                  type: string
-                  format: date-time
+              $ref: '#/components/schemas/Reservation'
       responses:
         '201':
           description: Reservation created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+        '400':
+          description: Invalid input or parking spot not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Get user reservations
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of user reservations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    parkingSpotId:
+                      $ref: '#/components/schemas/ParkingSpot'
+                    startTime:
+                      type: string
+                      format: date-time
+                    endTime:
+                      type: string
+                      format: date-time
+                    status:
+                      type: string
+                      enum: [active, cancelled]
+  /reservations/{id}:
+    delete:
+      summary: Cancel a reservation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation cancelled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /health:
     get:
       summary: Check API health
       responses:
         '200':
           description: Health status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  mongodb:
+                    type: string
+                    enum: [connected, disconnected]
+                  uptime:
+                    type: number
